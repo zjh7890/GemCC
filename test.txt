@@ -1,0 +1,128 @@
+extern int puts(char *__format, ...);
+
+extern void __assert_fail (char *__assertion, char *__file, int __line, char *__function);
+
+
+extern int var1;
+static signed int var2 = sizeof 100 + 1, var3 = _Alignof(int);
+// fixme: only define one "hello world" string literal
+char *p = "hello world";
+
+int *var5[10], (*var6)[10];
+
+typedef struct A A;
+struct A{
+    int a;
+    long b;
+    char c;
+};
+// fixme: A var7 = (A){1, 2};
+A *var7 = &(A){1, 2};
+
+union B{
+    int a;
+    long b;
+    char c;
+};
+
+enum C{
+    RED, ORANGE, YELLOW, BLUE,
+};
+
+int result;
+void add(int a, int b){
+    result = a + b;
+}
+
+extern int printf (char *__format, ...);
+
+extern void __assert_fail (char *__assertion, char *__file, int __line, char *__function);
+
+// fixme #define A (A + 1)  endless loop
+// fixme __assert_fail(#expr, __FILE__, __LINE__, __FUNCTION__);
+// fixme (!nothing here) #define / #include should be a separate line
+// #define assert(expr) if(!expr) // __assert_fail(" ", " ", " ", " ");
+#define assert(expr) if(!expr) {}
+#define true 1
+#define false 0
+#define NULL 0
+#define va_list char *
+// #define va_start(v, l) ( v = (long)( &l + sizeof(l) + _Alignof(l) - 1 )  & ~(_Alignof(l) - 1))
+// #define va_end(v) ( v = NULL )
+// #define va_arg(v, l) (*(l *)v)
+
+// fixme: in the making ...
+/*
+long superAdd(int n, ...)
+{
+va_list p;
+va_start(p, n);
+int count = 4;
+long result = 0;
+for(int i = 0; i < n; ++i){
+result += va_arg(p, long);
+if(count == 0){
+p += 64;    // fixme
+}
+else{
+p += 8;
+}
+--count;
+}
+va_end(p);
+return result;
+}
+*/
+// fixme: using assert instead
+int main(){
+    // fixme: assert("hello world" == "hello world");
+    assert(true);
+    add(3, 4);
+    printf("%d\n", result);
+
+    static int tmp = 10;
+    int funVar = {5};
+
+    int localVar;
+    char ch = 'b';
+    switch(ch){
+        case 'a':
+            localVar = 1; break;
+        case 'b':
+            localVar = 2; break;
+        default:
+            localVar = 3; break;
+    }
+
+    if(localVar == 2){
+        assert(true);
+    } else {
+        assert(false);
+    }
+
+    goto A;
+
+    assert(false);
+
+    int count = 0;
+    for(int i = 0; i < 10; ++i){
+        count += i;
+    }
+
+    A:
+    count = 0;
+    while(count < 3){
+        ++count;
+        continue;
+        count += 100;
+    }
+
+    count = 0;
+    do{
+        if(count > 3){
+            break;
+        }
+    } while(++count);
+
+    return 0;
+}
